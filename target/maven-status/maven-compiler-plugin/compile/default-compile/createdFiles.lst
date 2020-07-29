@@ -1,3 +1,9 @@
 org\example\config\WebConfig.class
-org\example\config\AppInitializer.class
+org\example\config\DataConfig.class
 org\example\WelcomeController.class
+org\example\model\Quiz.class
+org\example\config\AppInitializer.class
+org\example\repository\QuizRepository.class
+org\example\controller\QuizController.class
+org\example\service\QuizService.class
+org\example\service\QuizServiceImpl.class
