@@ -38,7 +38,22 @@ public class QuizController {
     @PostMapping("/addQuiz")
     public String addQuiz(@ModelAttribute("quiz") Quiz quiz, Model model) {
         quizService.save(quiz);
-        return "redirect:/allQuizzes";
+        return "redirect:/addQuestion";
+    }
+
+    @GetMapping("/addQuestion/{id}")
+    public String addQuestionPage(@PathVariable("id") int id, Model model) {
+        model.addAttribute("question", new Question());
+        model.addAttribute("quiz", quizService.getById(id));
+        return "addQuestion";
+    }
+
+    @PostMapping("/addQuestion/{id}")
+    public String addQuestion(@PathVariable("id") int id, @ModelAttribute("question") Question question,
+                              @ModelAttribute("quiz") Quiz quiz, Model model) {
+        question.setQuiz(quiz);
+        questionService.save(question);
+        return "redirect:/addQuestion/{id}";
     }
 
     @GetMapping("/allQuizzes")

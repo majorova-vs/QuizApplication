@@ -28,4 +28,9 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> questionByQuiz(int id) {
         return questionRepository.findByQuizId(id);
     }
+
+    @Override
+    public void save(Question question) {
+        questionRepository.save(question);
+    }
 }

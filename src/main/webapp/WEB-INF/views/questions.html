@@ -11,9 +11,8 @@
 </head>
 <body>
 Questions
-<ol type="1">
-        <li th:each="question : ${questions}">
-            ${question.content}
+<ol type="1" th:each="question : ${questions}">
+        <li th:text="${question.content}">
             <ol type="a">...
                <!-- <c:forEach var="answer" items="${question.answers }">
                     <li>
