@@ -10,7 +10,7 @@ public class Quiz {
     private int id;
     private String title;
     private String description;
-   private Set<Question> questions = new HashSet<>(0);
+    private Set<Question> questions = new HashSet<>(0);
 
 
     @Id

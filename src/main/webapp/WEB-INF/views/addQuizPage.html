@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Quiz</title>
+   <!-- <title th:if="${quiz.title != null}">Edit Quiz</title>
+    <title th:if="${quiz.title == null}">Add Quiz</title>
+    -->
+    <title>Edit</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -12,7 +15,10 @@
 </head>
 <body>
 <h1>Form</h1>
-<form action="#"  th:action="@{/addQuiz}" th:object="${quiz}" method="post">
+
+<!--   -->
+<form action="#"  th:action="${act} == 'Edit' ? @{/editQuiz} : @{/addQuiz}" th:object="${quiz}" method="post">
+     <input type="hidden" th:field="*{id}">
     <p>Title: <input type="text" th:field="*{title}" /></p>
     <p>Description: <input type="text" th:field="*{description}" /></p>
 

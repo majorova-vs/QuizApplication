@@ -1,14 +1,15 @@
 package org.example.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
+
+import org.example.model.Answer;
 import org.example.model.Question;
 import org.example.model.Quiz;
+import org.example.service.AnswerService;
 import org.example.service.QuestionService;
 import org.example.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,10 @@ import java.util.List;
 
 @Controller
 public class QuizController {
+
     private QuizService quizService;
     private QuestionService questionService;
+    private AnswerService answerService;
 
     @Autowired
     public void setQuizService(QuizService quizService) {
@@ -28,32 +31,57 @@ public class QuizController {
     }
     @Autowired
     public void setQuestionService(QuestionService questionService) {this.questionService = questionService; }
+    @Autowired
+    public void setAnswerService(AnswerService answerService) {
+        this.answerService = answerService;
+    }
+
 
     @GetMapping("/addQuiz")
     public String addQuizPage(Model model) {
+        model.addAttribute("act", "Save");
         model.addAttribute("quiz", new Quiz());
-        return "addQuiz";
+        return "addQuizPage";
     }
 
     @PostMapping("/addQuiz")
     public String addQuiz(@ModelAttribute("quiz") Quiz quiz, Model model) {
         quizService.save(quiz);
-        return "redirect:/addQuestion";
+        model.addAttribute("quizId", quiz.getId());
+        return "redirect:/addQuestion/{quizId}";
     }
 
-    @GetMapping("/addQuestion/{id}")
-    public String addQuestionPage(@PathVariable("id") int id, Model model) {
+    @GetMapping("/addQuestion/{quizId}")
+    public String addQuestionPage(@PathVariable("quizId") int quizId, Model model) {
+        /*Question question = new Question();
+        question.setQuiz(quizService.getById(quizId));*/
         model.addAttribute("question", new Question());
-        model.addAttribute("quiz", quizService.getById(id));
+       // model.addAttribute("quiz", quizService.getById(quizId));
         return "addQuestion";
     }
 
-    @PostMapping("/addQuestion/{id}")
-    public String addQuestion(@PathVariable("id") int id, @ModelAttribute("question") Question question,
-                              @ModelAttribute("quiz") Quiz quiz, Model model) {
-        question.setQuiz(quiz);
+    //@ModelAttribute("quiz") Quiz quiz,
+    @PostMapping("/addQuestion/{quizId}")
+    public String addQuestion(@PathVariable("quizId") int quizId,  @ModelAttribute("question") Question question, Model model) {
+        question.setQuiz(quizService.getById(quizId));
         questionService.save(question);
-        return "redirect:/addQuestion/{id}";
+        int questionId = question.getId();
+        model.addAttribute("questionId", questionId);
+        return "redirect:/addQuestion/{quizId}/{questionId}";
+    }
+
+    @GetMapping("/addQuestion/{quizId}/{questionId}")
+    public String addAnswerPage(@PathVariable("quizId") int quizId, @PathVariable("questionId") int questionId, Model model) {
+        model.addAttribute("answer", new Answer());
+        model.addAttribute("question", questionService.read(questionId));
+        return "addAnswerPage";
+    }
+    @PostMapping("/addQuestion/{quizId}/{questionId}")
+    public String addAnswer(@PathVariable("quizId") int quizId, @PathVariable("questionId") int questionId, @ModelAttribute("answer") Answer answer, Model model) {
+        answer.setQuestion(questionService.read(questionId));
+        answerService.save(answer);
+        model.addAttribute("questionId", questionId);
+        return "redirect:/addQuestion/{quizId}/{questionId}";
     }
 
     @GetMapping("/allQuizzes")
@@ -69,4 +97,25 @@ public class QuizController {
         model.addAttribute("questions", questions);
         return "/questions";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteQuiz(@PathVariable("id") int id, Model model) {
+        quizService.delete(id);
+        return "redirect:/allQuizzes";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editQuizPage(@PathVariable("id") int id, Model model) {
+        model.addAttribute("quiz", quizService.getById(id));
+        model.addAttribute("quizId", id);
+        model.addAttribute("act", "Edit");
+        return "addQuizPage";
+    }
+
+   @PostMapping("/editQuiz")
+    public String editQuiz(@ModelAttribute("quiz") Quiz quiz) {
+        quizService.save(quiz);
+        return "redirect:/allQuizzes";
+    }
+
 }

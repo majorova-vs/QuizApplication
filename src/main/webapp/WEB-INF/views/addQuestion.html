@@ -13,13 +13,14 @@
 <body>
 
 <h1>Add question</h1>
-<form action="#"  th:action="@{/addQuestion/{id}(id=${id})}" th:object="${question}" method="post">
-    <p>Question: <input type="text" th:field="*{content}" /></p>
-   <!-- <p>Answer: <input type="text" th:field="*{description}" /></p> -->
+<form action="#"  th:action="@{/addQuestion/{quizId}(quizId=${quizId})}" th:object="${question}" method="post">
+    <!-- <input type="hidden" th:field="*{quiz}" th:value="${quiz}"> -->
+     <p>Question: <input type="text" th:field="*{content}" /></p>
+    <!-- <p>Answer: <input type="text" th:field="*{description}" /></p> -->
 
     <p><input type="submit" value="Submit" /> </p>
 </form>
-<a href="views/allQuizzes">Exit</a>
+<a href="/allQuizzes">Exit</a>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

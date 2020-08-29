@@ -17,8 +17,22 @@
             <div class="card-body">
                 <h5 class="card-title" th:text="${quiz.title}"></h5>
                 <p class="card-text" th:text="${quiz.description}"></p>
-                <h4> <a th:href="@{'/quizzes/' + ${quiz.id}}"><span class="py-2 px-3 bg-success text-white rounded mybtn">GO!</span></a> </h4>
                 <!-- <h4> <a href="/quizzes/${quiz.id}" class="btn btn-primary">Go!</a></h4> -->
+               <!-- <h4> <a th:href="@{'/quizzes/' + ${quiz.id}}"><span class="py-2 px-3 bg-success text-white rounded mybtn">Edit</span></a> </h4> -->
+            </div>
+            <div>
+                <a th:href="@{'/quizzes/' + ${quiz.id}}">
+                    <button type="button" class="btn btn-outline-success">GO!</button>
+                </a>
+                <a th:href="@{'/edit/' + ${quiz.id}}">
+                    <button type="button" class="btn btn-outline-info">Edit</button>
+                </a>
+                <a th:href="@{'/delete/' + ${quiz.id}}">
+                <button type="button" class="btn btn-outline-danger">Delete</button>
+                </a>
+                <a th:href="@{'/addQuestion/' + ${quiz.id}}">
+                    <button type="button" class="btn btn-outline-warning">Add new questions</button>
+                </a>
             </div>
         </div>
     </th:each>

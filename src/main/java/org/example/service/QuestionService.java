@@ -8,5 +8,5 @@ public interface QuestionService {
     List<Question> allQuestions();
     Question read(int id);
     List<Question> questionByQuiz(int id);
-    public void save(Question question);
+    void save(Question question);
 }

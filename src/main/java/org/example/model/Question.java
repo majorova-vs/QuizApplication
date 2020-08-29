@@ -1,6 +1,8 @@
 package org.example.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -16,6 +18,10 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quizId")
     private Quiz quiz;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    private Set<Answer> answers = new HashSet<>();
+
 
     public int getId() {
         return id;

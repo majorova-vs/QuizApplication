@@ -34,4 +34,6 @@ public class QuizServiceImpl implements QuizService {
     public void delete(int id) {
         quizRepository.deleteById(id);
     }
+
+
 }
