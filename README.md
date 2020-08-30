@@ -7,5 +7,5 @@ Web application for creating tests and passing on various topics.
 - Maven;
 - Spring (Spring Core, Spring MVC, Spring Data JPA);
 - Tomcat 9;
-- Thymeleaf
+- Thymeleaf;
 - PostgreSQL. 
