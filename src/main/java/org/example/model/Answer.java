@@ -1,12 +1,11 @@
 package org.example.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "questions")
-public class Question {
+@Table(name = "answers")
+public class Answer {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +15,11 @@ public class Question {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quizId")
-    private Quiz quiz;
+    @JoinColumn(name = "questionId")
+    private Question question;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
-    private Set<Answer> answers = new HashSet<>();
-
+    @Column(name = "correct")
+    private int correct;
 
     public int getId() {
         return id;
@@ -39,18 +37,23 @@ public class Question {
         this.content = content;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
-    public Set<Answer> getAnswers() {
-        return answers;
+    public int getCorrect() {
+        return correct;
     }
-    public void setAnswers(Set<Answer> answers) {
-        this.answers = answers;
+
+    public void setCorrect(int correct) {
+        this.correct = correct;
     }
+
+
+
+
 }
