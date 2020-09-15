@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Answer;
 import org.example.model.Question;
 import org.example.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void save(Question question) {
         questionRepository.save(question);
+    }
+
+    @Override
+    public int findCorrectAnswerId(int questionId) {
+        Question question = questionRepository.findById(questionId).get();
+        for (Answer answer : question.getAnswers()) {
+            if (answer.getCorrect() == 1) {
+                return answer.getId();
+            }
+        }
+        return -1;
     }
 }

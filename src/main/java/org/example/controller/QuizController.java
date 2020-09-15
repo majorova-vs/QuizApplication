@@ -10,11 +10,9 @@ import org.example.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +96,28 @@ public class QuizController {
         return "/questions";
     }
 
+    @PostMapping("/quizzes/{id}")
+    public String submit(@PathVariable("id") int id, HttpServletRequest request, Model model) {
+        String[] questionIds = request.getParameterValues("questionId");
+        int score = 0;
+        for (String questionId : questionIds) {
+            int correctAnswerId = questionService.findCorrectAnswerId(Integer.parseInt(questionId));
+            if (correctAnswerId == Integer.parseInt(request.getParameter("question_"+questionId))) {
+                score++;
+            }
+
+        }
+        //request.setAttribute("score", score);
+        model.addAttribute("score", score);
+        System.out.println(score);
+        return "redirect:/result";
+    }
+
+    @GetMapping("/result")
+    public String result(@ModelAttribute("score") int score) {
+        return "result";
+    }
+
     @GetMapping("/delete/{id}")
     public String deleteQuiz(@PathVariable("id") int id, Model model) {
         quizService.delete(id);
@@ -117,5 +137,6 @@ public class QuizController {
         quizService.save(quiz);
         return "redirect:/allQuizzes";
     }
+
 
 }
